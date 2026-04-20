@@ -1,0 +1,37 @@
+"filename", "language", "HTML", "PostCSS", "C++", "Shell Script", "Markdown", "CMake", "comment", "blank", "total"
+"/home/power/projects/HP_HTTP_Server/AGENTS.md", "Markdown", 0, 0, 0, 0, 151, 0, 0, 51, 202
+"/home/power/projects/HP_HTTP_Server/CMakeLists.txt", "CMake", 0, 0, 0, 0, 0, 22, 0, 6, 28
+"/home/power/projects/HP_HTTP_Server/README.md", "Markdown", 0, 0, 0, 0, 40, 0, 0, 18, 58
+"/home/power/projects/HP_HTTP_Server/app/main.cpp", "C++", 0, 0, 65, 0, 0, 0, 4, 11, 80
+"/home/power/projects/HP_HTTP_Server/docs/DESIGN_BACKLOG.md", "Markdown", 0, 0, 0, 0, 28, 0, 0, 9, 37
+"/home/power/projects/HP_HTTP_Server/docs/builder/M1_DESIGN.md", "Markdown", 0, 0, 0, 0, 303, 0, 0, 75, 378
+"/home/power/projects/HP_HTTP_Server/docs/builder/M1_TEST_REPORT.md", "Markdown", 0, 0, 0, 0, 32, 0, 0, 11, 43
+"/home/power/projects/HP_HTTP_Server/docs/builder/TEST_LOG_GUIDE.md", "Markdown", 0, 0, 0, 0, 60, 0, 0, 28, 88
+"/home/power/projects/HP_HTTP_Server/docs/reviewer/M1_REVIEW_GUIDE.md", "Markdown", 0, 0, 0, 0, 115, 0, 0, 42, 157
+"/home/power/projects/HP_HTTP_Server/docs/reviewer/M1_REVIEW_REPORT_20260411_1436_half_close.md", "Markdown", 0, 0, 0, 0, 20, 0, 0, 7, 27
+"/home/power/projects/HP_HTTP_Server/include/base/Logger.h", "C++", 0, 0, 13, 0, 0, 0, 0, 6, 19
+"/home/power/projects/HP_HTTP_Server/include/base/NonCopyable.h", "C++", 0, 0, 11, 0, 0, 0, 0, 5, 16
+"/home/power/projects/HP_HTTP_Server/include/http/HttpRequest.h", "C++", 0, 0, 21, 0, 0, 0, 1, 9, 31
+"/home/power/projects/HP_HTTP_Server/include/http/HttpResponse.h", "C++", 0, 0, 20, 0, 0, 0, 0, 8, 28
+"/home/power/projects/HP_HTTP_Server/include/http/HttpServer.h", "C++", 0, 0, 19, 0, 0, 0, 2, 9, 30
+"/home/power/projects/HP_HTTP_Server/include/net/Epoller.h", "C++", 0, 0, 18, 0, 0, 0, 0, 8, 26
+"/home/power/projects/HP_HTTP_Server/include/net/InetAddress.h", "C++", 0, 0, 15, 0, 0, 0, 0, 7, 22
+"/home/power/projects/HP_HTTP_Server/include/net/Socket.h", "C++", 0, 0, 24, 0, 0, 0, 0, 9, 33
+"/home/power/projects/HP_HTTP_Server/include/net/TcpServer.h", "C++", 0, 0, 38, 0, 0, 0, 2, 11, 51
+"/home/power/projects/HP_HTTP_Server/public/404.html", "HTML", 5, 0, 0, 0, 0, 0, 0, 1, 6
+"/home/power/projects/HP_HTTP_Server/public/index.html", "HTML", 15, 0, 0, 0, 0, 0, 0, 1, 16
+"/home/power/projects/HP_HTTP_Server/public/style.css", "PostCSS", 0, 32, 0, 0, 0, 0, 0, 5, 37
+"/home/power/projects/HP_HTTP_Server/src/base/Logger.cpp", "C++", 0, 0, 46, 0, 0, 0, 0, 13, 59
+"/home/power/projects/HP_HTTP_Server/src/http/HttpRequest.cpp", "C++", 0, 0, 67, 0, 0, 0, 0, 12, 79
+"/home/power/projects/HP_HTTP_Server/src/http/HttpResponse.cpp", "C++", 0, 0, 79, 0, 0, 0, 0, 12, 91
+"/home/power/projects/HP_HTTP_Server/src/http/HttpServer.cpp", "C++", 0, 0, 145, 0, 0, 0, 0, 23, 168
+"/home/power/projects/HP_HTTP_Server/src/net/Epoller.cpp", "C++", 0, 0, 57, 0, 0, 0, 0, 12, 69
+"/home/power/projects/HP_HTTP_Server/src/net/InetAddress.cpp", "C++", 0, 0, 17, 0, 0, 0, 0, 6, 23
+"/home/power/projects/HP_HTTP_Server/src/net/Socket.cpp", "C++", 0, 0, 84, 0, 0, 0, 0, 19, 103
+"/home/power/projects/HP_HTTP_Server/src/net/TcpServer.cpp", "C++", 0, 0, 166, 0, 0, 0, 0, 21, 187
+"/home/power/projects/HP_HTTP_Server/tests/CMakeLists.txt", "CMake", 0, 0, 0, 0, 0, 12, 0, 3, 15
+"/home/power/projects/HP_HTTP_Server/tests/http_request_test.cpp", "C++", 0, 0, 21, 0, 0, 0, 0, 8, 29
+"/home/power/projects/HP_HTTP_Server/tests/http_response_test.cpp", "C++", 0, 0, 20, 0, 0, 0, 0, 6, 26
+"/home/power/projects/HP_HTTP_Server/tests/smoke_test.sh", "Shell Script", 0, 0, 0, 43, 0, 0, 1, 9, 53
+"/home/power/projects/HP_HTTP_Server/tests/static_file_test.cpp", "C++", 0, 0, 37, 0, 0, 0, 0, 13, 50
+"Total", "-", 20, 32, 983, 43, 749, 34, 10, 494, 2365

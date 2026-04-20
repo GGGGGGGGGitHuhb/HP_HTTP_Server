@@ -19,9 +19,13 @@ compile_commands.json
 *.log
 *.pid
 
+# Project planning and generated documentation
+docs/
+
 # Editor and OS files
 .DS_Store
 .idea/
-.vscode/
+.vscode/*
+!.vscode/settings.json
 *.swp
 *.swo

@@ -6,14 +6,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_library(hp_http_core
-    src/base/Logger.cpp
-    src/net/InetAddress.cpp
-    src/net/Socket.cpp
-    src/net/Epoller.cpp
-    src/net/TcpServer.cpp
-    src/http/HttpRequest.cpp
-    src/http/HttpResponse.cpp
-    src/http/HttpServer.cpp
+    src/base/logger.cpp
+    src/net/inet_address.cpp
+    src/net/socket.cpp
+    src/net/epoller.cpp
+    src/net/tcp_server.cpp
+    src/http/http_request.cpp
+    src/http/http_response.cpp
+    src/http/http_server.cpp
 )
 
 target_include_directories(hp_http_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include) # PUBLIC 让 hp_http_core 自己和链接它的目标都传递了 include 路径

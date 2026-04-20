@@ -1,0 +1,80 @@
+Date : 2026-04-13 11:54:58
+Directory : /home/power/projects/HP_HTTP_Server
+Total : 35 files,  1861 codes, 10 comments, 494 blanks, all 2365 lines
+
+Languages
++--------------+------------+------------+------------+------------+------------+
+| language     | files      | code       | comment    | blank      | total      |
++--------------+------------+------------+------------+------------+------------+
+| C++          |         21 |        983 |          9 |        228 |      1,220 |
+| Markdown     |          8 |        749 |          0 |        241 |        990 |
+| Shell Script |          1 |         43 |          1 |          9 |         53 |
+| CMake        |          2 |         34 |          0 |          9 |         43 |
+| PostCSS      |          1 |         32 |          0 |          5 |         37 |
+| HTML         |          2 |         20 |          0 |          2 |         22 |
++--------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                           | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                              |         35 |      1,861 |         10 |        494 |      2,365 |
+| . (Files)                                                                                      |          3 |        213 |          0 |         75 |        288 |
+| app                                                                                            |          1 |         65 |          4 |         11 |         80 |
+| docs                                                                                           |          6 |        558 |          0 |        172 |        730 |
+| docs (Files)                                                                                   |          1 |         28 |          0 |          9 |         37 |
+| docs/builder                                                                                   |          3 |        395 |          0 |        114 |        509 |
+| docs/reviewer                                                                                  |          2 |        135 |          0 |         49 |        184 |
+| include                                                                                        |          9 |        179 |          5 |         72 |        256 |
+| include/base                                                                                   |          2 |         24 |          0 |         11 |         35 |
+| include/http                                                                                   |          3 |         60 |          3 |         26 |         89 |
+| include/net                                                                                    |          4 |         95 |          2 |         35 |        132 |
+| public                                                                                         |          3 |         52 |          0 |          7 |         59 |
+| src                                                                                            |          8 |        661 |          0 |        118 |        779 |
+| src/base                                                                                       |          1 |         46 |          0 |         13 |         59 |
+| src/http                                                                                       |          3 |        291 |          0 |         47 |        338 |
+| src/net                                                                                        |          4 |        324 |          0 |         58 |        382 |
+| tests                                                                                          |          5 |        133 |          1 |         39 |        173 |
++------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| filename                                                                                       | language     | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| /home/power/projects/HP_HTTP_Server/AGENTS.md                                                  | Markdown     |        151 |          0 |         51 |        202 |
+| /home/power/projects/HP_HTTP_Server/CMakeLists.txt                                             | CMake        |         22 |          0 |          6 |         28 |
+| /home/power/projects/HP_HTTP_Server/README.md                                                  | Markdown     |         40 |          0 |         18 |         58 |
+| /home/power/projects/HP_HTTP_Server/app/main.cpp                                               | C++          |         65 |          4 |         11 |         80 |
+| /home/power/projects/HP_HTTP_Server/docs/DESIGN_BACKLOG.md                                     | Markdown     |         28 |          0 |          9 |         37 |
+| /home/power/projects/HP_HTTP_Server/docs/builder/M1_DESIGN.md                                  | Markdown     |        303 |          0 |         75 |        378 |
+| /home/power/projects/HP_HTTP_Server/docs/builder/M1_TEST_REPORT.md                             | Markdown     |         32 |          0 |         11 |         43 |
+| /home/power/projects/HP_HTTP_Server/docs/builder/TEST_LOG_GUIDE.md                             | Markdown     |         60 |          0 |         28 |         88 |
+| /home/power/projects/HP_HTTP_Server/docs/reviewer/M1_REVIEW_GUIDE.md                           | Markdown     |        115 |          0 |         42 |        157 |
+| /home/power/projects/HP_HTTP_Server/docs/reviewer/M1_REVIEW_REPORT_20260411_1436_half_close.md | Markdown     |         20 |          0 |          7 |         27 |
+| /home/power/projects/HP_HTTP_Server/include/base/Logger.h                                      | C++          |         13 |          0 |          6 |         19 |
+| /home/power/projects/HP_HTTP_Server/include/base/NonCopyable.h                                 | C++          |         11 |          0 |          5 |         16 |
+| /home/power/projects/HP_HTTP_Server/include/http/HttpRequest.h                                 | C++          |         21 |          1 |          9 |         31 |
+| /home/power/projects/HP_HTTP_Server/include/http/HttpResponse.h                                | C++          |         20 |          0 |          8 |         28 |
+| /home/power/projects/HP_HTTP_Server/include/http/HttpServer.h                                  | C++          |         19 |          2 |          9 |         30 |
+| /home/power/projects/HP_HTTP_Server/include/net/Epoller.h                                      | C++          |         18 |          0 |          8 |         26 |
+| /home/power/projects/HP_HTTP_Server/include/net/InetAddress.h                                  | C++          |         15 |          0 |          7 |         22 |
+| /home/power/projects/HP_HTTP_Server/include/net/Socket.h                                       | C++          |         24 |          0 |          9 |         33 |
+| /home/power/projects/HP_HTTP_Server/include/net/TcpServer.h                                    | C++          |         38 |          2 |         11 |         51 |
+| /home/power/projects/HP_HTTP_Server/public/404.html                                            | HTML         |          5 |          0 |          1 |          6 |
+| /home/power/projects/HP_HTTP_Server/public/index.html                                          | HTML         |         15 |          0 |          1 |         16 |
+| /home/power/projects/HP_HTTP_Server/public/style.css                                           | PostCSS      |         32 |          0 |          5 |         37 |
+| /home/power/projects/HP_HTTP_Server/src/base/Logger.cpp                                        | C++          |         46 |          0 |         13 |         59 |
+| /home/power/projects/HP_HTTP_Server/src/http/HttpRequest.cpp                                   | C++          |         67 |          0 |         12 |         79 |
+| /home/power/projects/HP_HTTP_Server/src/http/HttpResponse.cpp                                  | C++          |         79 |          0 |         12 |         91 |
+| /home/power/projects/HP_HTTP_Server/src/http/HttpServer.cpp                                    | C++          |        145 |          0 |         23 |        168 |
+| /home/power/projects/HP_HTTP_Server/src/net/Epoller.cpp                                        | C++          |         57 |          0 |         12 |         69 |
+| /home/power/projects/HP_HTTP_Server/src/net/InetAddress.cpp                                    | C++          |         17 |          0 |          6 |         23 |
+| /home/power/projects/HP_HTTP_Server/src/net/Socket.cpp                                         | C++          |         84 |          0 |         19 |        103 |
+| /home/power/projects/HP_HTTP_Server/src/net/TcpServer.cpp                                      | C++          |        166 |          0 |         21 |        187 |
+| /home/power/projects/HP_HTTP_Server/tests/CMakeLists.txt                                       | CMake        |         12 |          0 |          3 |         15 |
+| /home/power/projects/HP_HTTP_Server/tests/http_request_test.cpp                                | C++          |         21 |          0 |          8 |         29 |
+| /home/power/projects/HP_HTTP_Server/tests/http_response_test.cpp                               | C++          |         20 |          0 |          6 |         26 |
+| /home/power/projects/HP_HTTP_Server/tests/smoke_test.sh                                        | Shell Script |         43 |          1 |          9 |         53 |
+| /home/power/projects/HP_HTTP_Server/tests/static_file_test.cpp                                 | C++          |         37 |          0 |         13 |         50 |
+| Total                                                                                          |              |      1,861 |         10 |        494 |      2,365 |
++------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+

@@ -1,201 +1,127 @@
-# HP_HTTP_Server Agents Guide
+# HP_HTTP_Server Agent Guide
 
-## 项目定位
+## Project
 
-本项目目标是一份可以写进简历、支撑实习与秋招面试深挖的高性能网络项目：基于 Linux 的 C++ HTTP/1.1 高性能服务器。
+Build a resume-ready Linux C++ high-performance HTTP server.
 
-项目不追求“大而全”的 Web 框架，而是聚焦网络底层、并发模型、协议解析、资源管理、性能压测和工程化交付。面试表达重点是：我理解高性能网络服务器从连接建立、事件通知、请求解析、任务调度、响应发送到性能瓶颈定位的完整链路，并且能用数据证明优化效果。
+Core stack:
 
-## 技术栈选型
+- C++20
+- CMake
+- Linux socket API
+- epoll-based non-blocking IO
+- HTTP/1.1 static file service
 
-| 项目 | 选择 | 原因 |
-|---|---|---|
-| 开发语言 | C++20 | 适合展示系统编程、RAII、内存管理、并发控制和性能优化能力 |
-| 运行平台 | Linux | 高性能网络项目通常依赖 epoll、socket、fcntl、sendfile 等 Linux 能力 |
-| 构建系统 | CMake | 简历项目和企业 C++ 项目通用，便于组织模块与测试 |
-| 网络模型 | Reactor + epoll | 经典高性能 IO 多路复用模型，面试可展开事件驱动、非阻塞 IO、边缘/水平触发 |
-| 并发模型 | 主从 Reactor + 线程池 | 主线程负责 accept，从 Reactor 负责连接 IO，线程池处理业务任务 |
-| 协议 | HTTP/1.1 | 足够体现协议解析、长连接、静态资源、错误响应、性能测试 |
-| 日志 | 异步日志 | 避免同步 IO 阻塞业务线程，可展示队列、批量刷盘和优雅退出 |
-| 测试 | 单元测试 + 压力测试 | 单元测试保证解析/容器/线程池正确性，wrk/ab 验证吞吐与延迟 |
-| 性能工具 | wrk、perf、top、ss、netstat | 能定位 CPU、系统调用、连接状态和吞吐瓶颈 |
+All agents must keep the project focused on networking, concurrency, protocol handling, resource management, testing, performance analysis, and production-readiness.
 
-## 专有名词速记
+## Required Reading
 
-- Reactor：事件驱动模型。程序不为每个连接阻塞等待，而是由事件循环统一监听“哪些连接可读/可写”。
-- epoll：Linux 高性能 IO 多路复用接口，适合管理大量 socket 连接。
-- 非阻塞 IO：read/write 不等待数据或缓冲区，没准备好就立即返回，避免线程被单个连接卡住。
-- LT/ET：epoll 的水平触发和边缘触发。LT 更简单，ET 更高效但要求一次性读/写到 EAGAIN。
-- 线程池：提前创建固定数量线程，复用线程执行任务，避免频繁创建销毁线程。
-- keep-alive：HTTP 长连接。一次 TCP 连接可承载多个 HTTP 请求，减少握手开销。
-- 零拷贝：减少用户态与内核态之间的数据复制，例如用 sendfile 发送静态文件。
-- 背压：当下游处理不过来时，上游要限制读入或投递速度，避免内存失控。
-- P99 延迟：99% 请求能在该时间内完成，比平均延迟更能反映用户体验和尾部风险。
+All agents must read this file before working.
 
-## 需求拆解与实现范围
+Then read the role-specific guide:
 
-### 阶段一：MVP，可运行的 HTTP Server
-
-目标：能稳定启动、监听端口、接收 TCP 连接、解析基础 HTTP 请求并返回响应。
-
-必须实现：
-
-- TCP socket 创建、bind、listen、accept。
-- epoll 事件循环。
-- 非阻塞连接读写。
-- HTTP GET 请求解析。
-- 静态文件返回。
-- 404、400、500 基础错误响应。
-- CMake 构建。
-- README 中提供运行方式。
-
-完成标准：
-
-- 浏览器或 curl 可以访问本地静态页面。
-- 单连接、多连接请求不崩溃。
-- HTTP 解析错误能返回明确错误码。
-
-### 阶段二：高性能核心，可写简历主体
-
-目标：具备高性能网络服务器核心结构，能支撑压测和面试深挖。
-
-必须实现：
-
-- Reactor 封装：EventLoop、Channel、Poller/Epoller。
-- 连接封装：TcpConnection/HttpConnection。
-- 主从 Reactor：Acceptor 只负责接收连接，IO 线程负责连接读写。
-- 线程池：处理业务任务或耗时文件操作。
-- 定时器：关闭超时空闲连接。
-- HTTP keep-alive。
-- sendfile 静态文件零拷贝。
-- 异步日志。
-- 配置项：端口、线程数、静态目录、日志级别。
-- 压测脚本与结果记录。
-
-完成标准：
-
-- wrk 压测可以给出 QPS、平均延迟、P99 延迟。
-- 连接数升高时服务不出现明显内存泄漏。
-- 支持优雅关闭，退出时释放线程、连接、日志资源。
-- 能清楚解释一次请求在服务器内部的完整流转路径。
-
-### 阶段三：工程亮点，提升简历区分度
-
-目标：让项目从“写过 WebServer”升级为“做过可观测、可调优、可解释的高性能网络系统”。
-
-推荐实现：
-
-- 小根堆或时间轮定时器，对比两者复杂度。
-- 内存池或对象池，减少频繁 new/delete。
-- 写缓冲区高水位控制，避免慢连接拖垮内存。
-- HTTP 请求状态机，覆盖半包、粘包、非法请求。
-- 优雅重载配置。
-- 指标接口：连接数、请求数、错误数、平均耗时、活跃线程数。
-- benchmark 目录保存压测命令、环境参数和结果。
-- perf 火焰图或热点分析记录。
-
-完成标准：
-
-- 至少有 2 个可量化优化点，例如“sendfile 后静态文件吞吐提升 x%”。
-- 至少有 1 篇项目设计文档，能解释架构、瓶颈和取舍。
-- 至少有 1 组压测数据用于简历和面试说明。
-
-## 不建议优先做的功能
-
-| 功能 | 原因 |
+| Role | Guide |
 |---|---|
-| 完整动态 Web 框架 | 容易偏离高性能网络主题，投入大但面试收益低 |
-| HTTP/2 | 协议复杂度高，秋招项目不如把 HTTP/1.1 做扎实 |
-| 数据库 ORM | 与网络服务器主线关联弱 |
-| 复杂前端页面 | 不能体现系统编程核心能力 |
-| 跨平台支持 | Linux 网络栈才是该项目的主要价值点 |
+| Leader | `docs/leader/LEADER_GUIDE.md` |
+| Builder | `docs/builder/BUILDER_GUIDE.md` |
+| Reviewer | `docs/reviewer/REVIEWER_GUIDE.md` |
 
-## 推荐模块划分
+Role-specific milestone documents live under:
 
-| 模块 | 责任 | 核心文件建议 |
-|---|---|---|
-| net | socket、epoll、事件循环、连接管理 | `EventLoop`, `Channel`, `Epoller`, `Socket`, `Acceptor`, `TcpConnection` |
-| http | HTTP 请求解析、响应生成、静态资源处理 | `HttpRequest`, `HttpResponse`, `HttpParser`, `HttpServer` |
-| base | 日志、线程、线程池、缓冲区、时间工具 | `Logger`, `AsyncLogger`, `ThreadPool`, `Buffer`, `Timestamp` |
-| timer | 空闲连接超时、定时任务 | `Timer`, `TimerQueue` |
-| config | 配置加载和启动参数 | `Config` |
-| tests | 单元测试和集成测试 | HTTP 解析、Buffer、线程池、定时器 |
-| benchmark | 压测脚本和性能报告 | wrk 脚本、测试环境、结果表 |
-| docs | 设计文档和面试说明 | 架构设计、性能优化记录 |
-
-## 文档分层
-
-| 目录 | 读者 | 内容 |
-|---|---|---|
-| `docs/builder/` | Builder | 里程碑实现设计、模块边界、测试要求、交付报告 |
-| `docs/reviewer/` | Reviewer | 审查顺序、风险清单、验证命令、通过标准 |
-| `docs/DESIGN_BACKLOG.md` | Leader | 后续必须补设计的能力和延期原因 |
-
-规则：
-
-- `docs/builder/Mx_DESIGN.md` 只写 Builder 实现所需内容，不写 Leader 工作汇报。
-- `docs/reviewer/Mx_REVIEW_GUIDE.md` 只写 Reviewer 审查所需内容，不重复完整实现设计。
-- 每次正式测试后应生成测试记录，成功和失败都要记录。
-- 原始测试输出建议放在 `build/test_logs/`，交付摘要建议放在 `docs/builder/Mx_TEST_REPORT.md`。
-
-## 每次需求输出格式
-
-产品经理提出需求后，技术负责人需要输出以下精简设计表。
-
-| 项目 | 内容 |
+| Purpose | Path |
 |---|---|
-| 需求目标 | 该需求解决什么用户或工程问题 |
-| 使用场景 | 请求路径、并发规模、异常场景 |
-| 技术方案 | 采用的数据结构、网络模型、线程模型或协议处理方式 |
-| 选型理由 | 为什么选择该方案，与备选方案相比的优势 |
-| 模块影响 | 涉及哪些模块和文件 |
-| 实现边界 | 本次做到什么程度，暂不做什么 |
-| 验收标准 | 如何证明功能正确、性能达标 |
-| 风险与对策 | 可能的 bug、性能瓶颈、复杂度和规避方式 |
+| Builder designs | `docs/builder/designs/` |
+| Builder reports | `docs/builder/reports/` |
+| Reviewer guides | `docs/reviewer/guides/` |
+| Reviewer reports | `docs/reviewer/reports/` |
+| Leader planning and reports | `docs/leader/` |
+| User-facing overview | `docs/user/` |
 
-## 当前项目建议目标
+## Role Boundaries
 
-简历推荐描述：
+| Role | Responsibility |
+|---|---|
+| Leader | Plans milestones, owns architecture decisions, splits scope, maintains backlog, writes Builder and Reviewer instructions |
+| Builder | Implements only the assigned milestone design, writes unit tests, runs required local verification, writes work/test reports |
+| Reviewer | Reviews implementation against design, reruns or extends verification, records findings and review report |
 
-> 基于 C++20 实现 Linux 高性能 HTTP 服务器，采用 Reactor + epoll 非阻塞 IO 模型，支持 HTTP/1.1、长连接、静态资源访问、定时器关闭空闲连接、线程池任务调度、异步日志和 sendfile 零拷贝优化，并通过 wrk 进行压力测试与性能瓶颈分析。
+Agents must not implement work outside the current milestone design unless the user explicitly changes the scope.
 
-建议简历亮点：
+## Current Milestone Rules
 
-- 使用 epoll + 非阻塞 IO 实现事件驱动网络模型，支持高并发连接处理。
-- 基于主从 Reactor 和线程池拆分连接接入、IO 事件与业务任务，提高多核利用率。
-- 实现 HTTP 请求解析状态机，正确处理半包、粘包、非法请求和 keep-alive。
-- 引入定时器管理空闲连接，避免连接泄漏和无效 fd 长时间占用。
-- 使用 sendfile 优化静态文件传输，减少用户态/内核态数据拷贝。
-- 通过 wrk、perf 等工具进行压测和热点分析，形成可量化性能报告。
+- M1 is a single-threaded non-blocking epoll HTTP/1.1 static file server.
+- M1 must not add thread pools, main-sub Reactor, keep-alive, sendfile, async logging, full HTTP parser, wrk reports, or deployment work unless a later design requires it.
+- Later milestones must recover deferred items from `docs/leader/PROJECT_BACKLOG.md`.
 
-## 推荐里程碑
+## Documentation Rules
 
-| 里程碑 | 目标 | 产出 |
-|---|---|---|
-| M1 | 项目骨架与单线程 HTTP Server | CMake、基础 socket、curl 可访问 |
-| M2 | epoll Reactor 重构 | EventLoop、Channel、Epoller、非阻塞 IO |
-| M3 | HTTP 完善 | 状态机解析、响应生成、静态文件、错误码 |
-| M4 | 并发与资源治理 | 线程池、主从 Reactor、定时器、优雅关闭 |
-| M5 | 性能优化 | sendfile、异步日志、Buffer 优化、背压 |
-| M6 | 测试与文档 | 单元测试、wrk 报告、架构文档、简历话术 |
+- `AGENTS.md` contains only broad rules that all agents need.
+- Explanations for the user belong in `docs/user/`.
+- Leader planning belongs in `docs/leader/`.
+- Builder implementation details belong in `docs/builder/`.
+- Reviewer checklists belong in `docs/reviewer/`.
+- Each agent must write a work report after each assigned task. The chat response may be brief and point to the report.
 
-## 编码约定
+## Common Commands
 
-- 优先保持模块小而清晰，避免提前做复杂抽象。
-- 对外接口使用 RAII 管理资源，避免裸 fd 生命周期不清。
-- 网络读写必须考虑 EAGAIN、EWOULDBLOCK、EINTR。
-- HTTP 解析必须支持请求分片到达，不允许假设一次 read 得到完整请求。
-- 新增功能必须给出对应测试或可复现验证命令。
-- 性能优化必须有压测数据，不只凭感觉判断。
+```bash
+cmake -S . -B build
+cmake --build build
+ctest --test-dir build
+tests/smoke_test.sh
+```
 
-## 决策原则
+## Formatting
 
-1. 简历价值优先：优先做能体现网络、操作系统、并发、性能分析能力的功能。
-2. 可解释性优先：每个模块都要能在面试中讲清楚为什么这么设计。
-3. 数据优先：优化前后尽量保留压测命令、机器环境和指标。
-4. 稳定性优先：高性能的前提是不崩溃、不泄漏、不忙等。
-5. 渐进迭代：先跑通主链路，再引入并发、优化和工程化能力。
+- C++ standard is C++20.
+- Use clang-format for C/C++ files.
+- Repository format configuration is in `.clang-format`.
+- VS Code format integration is in `.vscode/settings.json`.
+- Do not reformat unrelated code in broad sweeps.
 
-## 附注
+## Coding Style
 
-每位 Agent 在进行了一次工作后，需要精简地向用户汇报本次工作内容。
+Follow Google C++ style unless a local design document explicitly narrows a rule.
+
+Naming:
+
+- Types/classes/structs/enums: `PascalCase`, for example `TcpServer`, `HttpRequest`.
+- Functions: `PascalCase`, for example `Start()`, `HandleReadEvent()`.
+- Variables and parameters: `snake_case`, for example `client_fd`, `static_root`.
+- Data members: `snake_case_`, for example `listen_socket_`, `read_buffer_`.
+- Constants and enum values: `kPascalCase`, for example `kReadBufferSize`, `kInfo`.
+- Namespaces: lower case, for example `hp::net`, `hp::http`.
+- File names: lower case with underscores when needed, for example `tcp_server.h`.
+
+Include order:
+
+- The current file's matching header first.
+- C system headers.
+- C++ standard library headers.
+- Third-party library headers.
+- Project headers.
+- Keep include groups separated by one blank line.
+
+Class design:
+
+- Prefer RAII for file descriptors, sockets, memory, and other owned resources.
+- Put `public` before `private` unless there is a clear reason not to.
+- Mark single-argument constructors `explicit` unless implicit conversion is intentional.
+- Avoid broad global state; keep ownership and lifetime visible.
+- Avoid complex macros; prefer typed constants, functions, and classes.
+- Use `auto` only when it improves readability or the type is obvious from the right-hand side.
+
+Header files:
+
+- New header files should use `#pragma once`.
+- Headers must be self-contained: including a header alone should be enough to compile it.
+- Prefer forward declarations when they reduce unnecessary dependencies without hurting clarity.
+- Keep public API declarations in headers and implementation details in `.cpp` files.
+- Do not delete existing user comments unless they are clearly wrong and the current task requires fixing them.
+
+## Safety
+
+- Do not delete user changes.
+- Do not bypass tests because a change looks small.
+- Do not treat missing reports as acceptable handoff.
+- If a command cannot run, record the reason in the relevant report.
